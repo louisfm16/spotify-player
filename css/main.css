@@ -18,8 +18,7 @@ html, body {
 /* * Navigation */
 #navbar {
     position: relative;
-    /* FIXME: May consider making this a % */
-    height: 60px;
+    height: 8%;
     background-color: #212121;
 }
 
@@ -35,14 +34,70 @@ html, body {
     height: 100%;
 }
 
+#search {
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 60%;
+    overflow: hidden;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+    /* -webkit-appearance: none; */
+}
+
+#search input[type="search"] {
+    display: inline-block;
+    height: 100%;
+    width: 350px;
+    padding: 0 10px;
+    color: #b3b3b3;
+    border: 0;
+    /* outline: none; */
+    background-color: #121212;
+}
+
+#search input[type="search"]:focus {
+    outline-color: #1db954;
+}
+
+#search .search_icon {
+    display: inline-block;
+    height: 100%;
+    width: 40px;
+    float: right;
+    background-color: #535353;
+}
+
+#login {
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+
+    color: #1db954;
+    font-size: 20px;
+    line-height: 30px;
+    font-family: sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+}
+
 /* * Panels */
 #panels-container {
     position: relative;
-    height: 80%;
+    height: 77%;
     overflow: hidden;
     /* overflow-x: scroll; */
     cursor: pointer;
     z-index: 0;
+    perspective: 400px;
 }
 
 
@@ -63,8 +118,8 @@ html, body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 103%;
-    width: 103%;
+    height: 100%;
+    width: 100%;
     background-position: center;
     background-size: cover;
     filter: blur(20px);
@@ -91,11 +146,12 @@ html, body {
     position: absolute;
     top: 50%;
     left: 15%;
-    transform: translate(0, -50%);
+    transform: translate(0, -50%) rotateY(10deg);
     background-image: url("../assets/images/test_cover.jpg");
 }
 
 .panel-prev::before {
+    display: none;
     background-image: url("../assets/images/test_cover.jpg");
 }
 
@@ -103,10 +159,17 @@ html, body {
     position: absolute;
     top: 50%;
     right: 15%;
-    transform: translate(0, -50%);
+    transform: translate(0, -50%) rotateY(-10deg);
     background-image: url("../assets/images/test_cover3.jpg");
 }
 
 .panel-next::before {
+    display: none;
     background-image: url("../assets/images/test_cover3.jpg");
+}
+
+/* * Details & Controls Container */
+#details-and-controls {
+    height: 15%;
+    background-color: #212121;
 }
