@@ -1,0 +1,112 @@
+/* * Lazy CSS reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100vh;
+    width: 100vw;
+    max-height: 100vh;
+    max-width: 100vw;
+    overflow: hidden;
+    background-color: #121212;
+}
+
+
+/* * Navigation */
+#navbar {
+    position: relative;
+    /* FIXME: May consider making this a % */
+    height: 60px;
+    background-color: #212121;
+}
+
+#logo-link {
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+}
+
+#logo {
+    height: 100%;
+}
+
+/* * Panels */
+#panels-container {
+    position: relative;
+    height: 80%;
+    overflow: hidden;
+    /* overflow-x: scroll; */
+    cursor: pointer;
+    z-index: 0;
+}
+
+
+/* ! This whole thing may need a re-work for scrolling */
+.panel {
+    display: block;
+    border-radius: 25px;
+    height: 55%;
+    width: 160px;
+    background-position: center;
+    background-size: cover;
+}
+
+.panel::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 103%;
+    width: 103%;
+    background-position: center;
+    background-size: cover;
+    filter: blur(20px);
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.panel-curr {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    height: 80%;
+    width: 240px;
+    background-image: url("../assets/images/test_cover2.jpg");
+}
+
+.panel-curr::before {
+    background-image: url("../assets/images/test_cover2.jpg");
+}
+
+.panel-prev {
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    transform: translate(0, -50%);
+    background-image: url("../assets/images/test_cover.jpg");
+}
+
+.panel-prev::before {
+    background-image: url("../assets/images/test_cover.jpg");
+}
+
+.panel-next {
+    position: absolute;
+    top: 50%;
+    right: 15%;
+    transform: translate(0, -50%);
+    background-image: url("../assets/images/test_cover3.jpg");
+}
+
+.panel-next::before {
+    background-image: url("../assets/images/test_cover3.jpg");
+}
