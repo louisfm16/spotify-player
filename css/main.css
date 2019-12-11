@@ -97,16 +97,22 @@ input[type="search"]::-webkit-search-results-decoration {
     /* overflow-x: scroll; */
     cursor: pointer;
     z-index: 0;
-    perspective: 400px;
+    perspective: 900px;
 }
 
-
 /* ! This whole thing may need a re-work for scrolling */
+.glider-track {
+    height: 100%;
+    perspective: 900px;
+}
+
 .panel {
-    display: block;
+    position: relative;
+    display: inline-block;
     border-radius: 25px;
-    height: 55%;
-    width: 160px;
+    height: 80% !important;
+    width: 30vh !important;
+    margin: auto;
     background-position: center;
     background-size: cover;
 }
@@ -128,13 +134,7 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .panel-curr {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    height: 80%;
-    width: 240px;
+    /* transform: translate3d(0, 0, -400px); */
     background-image: url("../assets/images/test_cover2.jpg");
 }
 
@@ -143,10 +143,7 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .panel-prev {
-    position: absolute;
-    top: 50%;
-    left: 15%;
-    transform: translate(0, -50%) rotateY(10deg);
+    transform: translate3d(0, 0, -300px);
     background-image: url("../assets/images/test_cover.jpg");
 }
 
@@ -156,16 +153,22 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .panel-next {
-    position: absolute;
-    top: 50%;
-    right: 15%;
-    transform: translate(0, -50%) rotateY(-10deg);
+    transform: translate3d(0, 0, -300px);
     background-image: url("../assets/images/test_cover3.jpg");
 }
 
 .panel-next::before {
     display: none;
     background-image: url("../assets/images/test_cover3.jpg");
+}
+
+.panel-out {
+    position: absolute !important;
+    top: 50%;
+    right: 0;
+    transform: translate3d(0, -50%, -800px);
+    margin: 0;
+    background-image: url("../assets/images/test_cover.jpg");
 }
 
 /* * Details & Controls Container */
