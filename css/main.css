@@ -89,30 +89,27 @@ input[type="search"]::-webkit-search-results-decoration {
     text-decoration: none;
 }
 
+
 /* * Panels */
 #panels-container {
     position: relative;
     height: 77%;
     overflow: hidden;
-    /* overflow-x: scroll; */
     cursor: pointer;
     z-index: 0;
     perspective: 900px;
 }
 
 /* ! This whole thing may need a re-work for scrolling */
-.glider-track {
-    height: 100%;
-    perspective: 900px;
-}
-
 .panel {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    /* position: relative; */
     display: inline-block;
     border-radius: 25px;
     height: 80% !important;
     width: 30vh !important;
-    margin: auto;
+    /* margin: auto; */
     background-position: center;
     background-size: cover;
 }
@@ -134,7 +131,8 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .panel-curr {
-    /* transform: translate3d(0, 0, -400px); */
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
     background-image: url("../assets/images/test_cover2.jpg");
 }
 
@@ -143,7 +141,8 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .panel-prev {
-    transform: translate3d(0, 0, -300px);
+    left: 0;
+    transform: translate3d(0, -50%, -300px);
     background-image: url("../assets/images/test_cover.jpg");
 }
 
@@ -153,7 +152,8 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .panel-next {
-    transform: translate3d(0, 0, -300px);
+    right: 0%;
+    transform: translate3d(0, -50%, -300px);
     background-image: url("../assets/images/test_cover3.jpg");
 }
 
