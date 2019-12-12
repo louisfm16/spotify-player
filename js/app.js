@@ -3,7 +3,7 @@ window.addEventListener('load', function(){
         // startAt: 0,
         perTouch: 1,
         perView: 3,
-        gap: 200,
+        gap: 100,
         // focusAt: 0,
 
         // perView: 1,
