@@ -110,18 +110,15 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .glide__slide {
     position: relative;
+    display: flex;
     height: 100%;
-    /* perspective: 900px; */
-    /* background-color: grey; */
+    background-color: grey;
     cursor: pointer;
+    /* justify-content: center; */
 }
 
 .panel {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: inline-block;
+    margin: auto;
     border-radius: 25px;
     height: 80%;
     width: 30vh;
@@ -130,16 +127,25 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .panel-curr {
-    background-image: url("../assets/images/test_cover2.jpg");
+    overflow: hidden;
+    /* background-image: url("../assets/images/test_cover2.jpg"); */
+}
+
+.panel-curr > img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
 }
 
 .panel-shadow {
     content: "";
     display: block;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    /* top: 50%;
+    left: 50%; */
+    /* transform: translate(-50%, -50%); */
     height: 80%;
     width: 30vh;
     background-position: center;
