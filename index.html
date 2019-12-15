@@ -28,14 +28,21 @@
     <div id="panels-container">
         <div data-glide-el="track" class="glide__track">
             <ul class="glide__slides">
-                <!-- !May need re-working for tirgger box based on UX -->
+                <!-- !May need re-working for trigger box based on UX -->
                 <li class="glide__slide"><div class="panel panel-prev"></div></li>
                 <li class="glide__slide">
                     <span class="panel panel-shadow curr"></span>
-                    <div class="panel panel-curr curr"><img src="assets/images/test_cover2.jpg" alt=""></div>
+                    <div class="panel panel-curr curr">
+                        <img class="panel-img" src="assets/images/test_cover2.jpg" alt="">
+                        <div class="panel-settings"></div>
+                        <div class="panel_details">
+                            <div class="panel_details-title"></div>
+                            <div class="panel_details-artist"></div>
+                            <div class="panel_details-heart"></div>
+                        </div>
+                    </div>
                 </li>
                 <li class="glide__slide"><div class="panel panel-next"></div></li>
-
 
                 <li class="glide__slide"><div class="panel panel-loaded"></div></li>
                 <li class="glide__slide"><div class="panel panel-loaded"></div></li>
@@ -46,13 +53,21 @@
     </div>
 
     <!-- * Details may or may not be inside of the the panel itself -->
-    <div id="details-and-controls">
-        <div id="details">
-
+    <div class="controls">
+        <div class="controls_slider">
+            <input class="controls_slider-slide" type="range" min="1" max="100" value="50">
+            <span class="controls_slider-currTime"></span>
+            <span class="controls_slider-timeLeft"></span>
         </div>
 
-        <div id="controls">
-            
+        <div class="controls_actions">
+            <span class="controls_actions-shuffle"></span>
+            <div class="controls_actions-generic">
+                <span class="controls_actions-prev"></span>
+                <div class="controls_actions-toggle"></div>
+                <span class="controls_actions-next"></span>
+            </div>
+            <span class="controls_actions-repeat"></span>
         </div>
     </div>
     <script src="js/vanilla-tilt.min.js"></script>
