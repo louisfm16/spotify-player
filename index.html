@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <link rel="stylesheet" href="css/fontello.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/glide.core.min.css">
 
@@ -56,20 +57,21 @@
     <div class="controls">
         <div class="controls_slider">
             <input class="controls_slider-slide" type="range" min="1" max="100" value="50">
-            <span class="controls_slider-currTime"></span>
-            <span class="controls_slider-timeLeft"></span>
+            <span class="controls_slider-currTime">0:00</span>
+            <span class="controls_slider-timeLeft">3:45</span>
         </div>
 
         <div class="controls_actions">
-            <span class="controls_actions-shuffle"></span>
+            <span class="controls_actions-shuffle icon-shuffle controls-icon icon"></span>
             <div class="controls_actions-generic">
-                <span class="controls_actions-prev"></span>
-                <div class="controls_actions-toggle"></div>
-                <span class="controls_actions-next"></span>
+                <span class="controls_actions-prev icon-step-backward icon"></span>
+                <div class="controls_actions-toggle icon"></div>
+                <span class="controls_actions-next icon-step-forward icon"></span>
             </div>
-            <span class="controls_actions-repeat"></span>
+            <span class="controls_actions-repeat icon-loop controls-icon icon"></span>
         </div>
     </div>
+
     <script src="js/vanilla-tilt.min.js"></script>
     <script src="js/glide.min.js"></script>
     <script src="js/app.js"></script>
