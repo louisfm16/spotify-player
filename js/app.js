@@ -1,19 +1,13 @@
+// Flags
+var shuffle = true,
+    pause = false,
+    repeat = false,
+    mute = false;
+
+var glide;
+
 window.addEventListener('load', function(){
-    // Glide JS
-    var glide = new Glide('.glide', {
-        perTouch: 1,
-        perView: 3,
-        gap: 100,
-        bound: true,
-        rewind: false,
-
-        // perView: 1,
-        // peek: 500
-    });
-    
-    glide.mount();
-
-    console.log(glide);
+    Init();
 
     // Tilt JS
     var curr = document.querySelector("#curr");
@@ -38,12 +32,31 @@ window.addEventListener('load', function(){
 
         img.style.top = (pos.top + "%");
         img.style.left = (pos.left + "%");
+        img.style.transition = "none";
     });
 
     // Reset image position
-    // TODO: add transition / Easing
     curr.addEventListener("mouseleave", function(e) {
         img.style.top = "50%";
         img.style.left = "50%";
+        img.style.transition = "all 0.3s";
     });
 });
+
+function Init() {
+    // Glide JS
+    // TODO: May need to reference later for breakpoints
+    glide = new Glide('.glide', {
+        startAt: 1,
+        perTouch: 1,
+        perView: 1,
+        gap: 200,
+        bound: true,
+        rewind: false,
+        peek: 900
+    }).mount();
+
+
+}
+
+// function ad

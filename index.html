@@ -13,6 +13,7 @@
 </head>
 <body>
     <nav id="navbar">
+        <!-- account avatar after login -->
         <a href="https://www.spotify.com" target="_blank" id="logo-link">
             <img id="logo" src="assets/images/spotify_logo.png" alt="Spotify company logo">
         </a>
@@ -26,41 +27,44 @@
     </nav>
 
     <!-- Holds the 3 panels at most on the screen -->
-    <div id="panels-container">
-        <div data-glide-el="track" class="glide__track">
+    <div id="panels-container" class="glide">
+        <div class="glide__track" data-glide-el="track" >
             <ul class="glide__slides">
                 <!-- !May need re-working for trigger box based on UX -->
-                <li class="glide__slide"><div class="panel panel-prev"></div></li>
-                <li class="glide__slide">
-                    <span class="panel panel-shadow curr"></span>
-                    <div class="panel panel-curr curr">
-                        <img class="panel-img" src="assets/images/test_cover2.jpg" alt="">
-                        <div class="panel-settings"></div>
-                        <div class="panel_details">
-                            <div class="panel_details-title"></div>
-                            <div class="panel_details-artist"></div>
-                            <div class="panel_details-heart"></div>
-                        </div>
+                <li class="glide__slide"><div class="panel panel-prev"><img src="assets/images/test_cover.jpg" alt=""></div></li>
+
+                <li class="glide__slide curr" id="curr">
+                    <!-- <span class="panel panel-shadow"></span> -->
+                    <div class="panel panel-curr">
+                        <img class="panel-img img-curr" id="img-curr" src="assets/images/test_cover2.jpg" alt="">
                     </div>
                 </li>
-                <li class="glide__slide"><div class="panel panel-next"></div></li>
 
-                <li class="glide__slide"><div class="panel panel-loaded"></div></li>
-                <li class="glide__slide"><div class="panel panel-loaded"></div></li>
-                <li class="glide__slide"><div class="panel panel-loaded"></div></li>
-                <li class="glide__slide"><div class="panel panel-loaded"></div></li>
+                <li class="glide__slide"><div class="panel panel-next"><img src="assets/images/test_cover3.jpg" alt=""></div></li>
+
+
+
+                <li class="glide__slide"><div class="panel panel-loaded"><img src="assets/images/test_cover.jpg" alt=""></div></li>
+                <li class="glide__slide"><div class="panel panel-loaded"><img src="assets/images/test_cover.jpg" alt=""></div></li>
+                <li class="glide__slide"><div class="panel panel-loaded"><img src="assets/images/test_cover.jpg" alt=""></div></li>
+                <li class="glide__slide"><div class="panel panel-loaded"><img src="assets/images/test_cover.jpg" alt=""></div></li>
+                <li class="glide__slide"><div class="panel panel-loaded"><img src="assets/images/test_cover.jpg" alt=""></div></li>
+                <li class="glide__slide"><div class="panel panel-loaded"><img src="assets/images/test_cover.jpg" alt=""></div></li>
             </ul>
         </div>
     </div>
 
-    <!-- * Details may or may not be inside of the the panel itself -->
-    <div class="controls">
-        <div class="controls_slider">
-            <input class="controls_slider-slide" type="range" min="1" max="100" value="50">
-            <span class="controls_slider-currTime">0:00</span>
-            <span class="controls_slider-timeLeft">3:45</span>
-        </div>
+    <!-- 
+    <div class="panel-like"></div>
+    <div class="panel_details">
+        <div class="panel_details-title"></div>
+        <div class="panel_details-artist"></div>
+        <div class="panel_details-heart"></div>
+    </div>
+    -->
 
+    <!-- TODO: Volume Rocker -->
+    <div class="controls">
         <div class="controls_actions">
             <span class="controls_actions-shuffle icon-shuffle controls-icon icon"></span>
             <div class="controls_actions-generic">
@@ -69,6 +73,12 @@
                 <span class="controls_actions-next icon-step-forward icon"></span>
             </div>
             <span class="controls_actions-repeat icon-loop controls-icon icon"></span>
+        </div>
+        
+        <div class="controls_slider">
+            <div class="controls_slider-slide"></div>
+            <span class="controls_slider-currTime">0:00</span>
+            <span class="controls_slider-timeLeft">3:45</span>
         </div>
     </div>
 
