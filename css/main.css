@@ -98,25 +98,8 @@ input[type="search"]::-webkit-search-results-decoration {
     z-index: 0;
 }
 
-.glide__track {
-    height: 100%;
-}
-
-.glide__slides {
-    /* position: relative; */
-    height: 100%;
-    perspective: 900px;
-}
-
-.glide__slide {
-    position: relative;
-    display: flex;
-    height: 100%;
-    cursor: pointer;
-}
-
 .panel {
-    margin: auto;
+    /* margin: auto; */
     border-radius: 25px;
     height: 65%;
     width: 25vh;
@@ -126,8 +109,9 @@ input[type="search"]::-webkit-search-results-decoration {
     transform: translate(-50%, -50%);
     background-position: center;
     background-size: cover;
-    transition: all 0.5s ease-in-out;
     overflow: hidden;
+    z-index: 5;
+    cursor: pointer;
 }
 
 .panel > img {
@@ -152,6 +136,7 @@ input[type="search"]::-webkit-search-results-decoration {
     filter: blur(20px);
     opacity: 0.6;
     background-image: url("../assets/images/test_cover2.jpg");
+    z-index: 9;
 }
 
 .panel_details {
@@ -162,6 +147,7 @@ input[type="search"]::-webkit-search-results-decoration {
     overflow: hidden;
     height: 80%;
     width: 30vh;
+    z-index: 10;
 }
 
 .panel-curr > img {
