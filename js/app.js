@@ -27,6 +27,8 @@ var mc,
     currCard,
     currCardPos = {};
 
+    var toggle = 0;
+
 const bp = 300,
     angleBp = 10,
     maxOpacity = 0.6,
@@ -94,8 +96,9 @@ function UpdateCardPos(el, e) {
     el.style.transition = 'none';
 }
 
-function ShadowOpacity(val) {
+function ShadowOpacity(val, sec) {
     cardShadow.style.opacity = val;
+    cardShadow.style.transition = 'all '+ sec +'s ease-in';
 }
 
 // Actions
@@ -143,8 +146,10 @@ function DestroyCurrCard() {
 
 function SetUpNextCard() {
     screen.getElementsByTagName('div')[0].setAttribute('id', 'panel-curr');
+
     currCard = document.getElementById('panel-curr');
-    currCard.style.transition = 'all 1s ease-in-out';
+    currCard.setAttribute('class', 'panel');
+    currCard.style.transition = 'all 0.3s ease-in-out';
     currCardPos = {};
 
     mc = new Hammer.Manager(currCard);
@@ -155,14 +160,27 @@ function SetUpNextCard() {
 
     var url = currCard.getElementsByTagName('img')[0].getAttribute('src');
     cardShadow.style.backgroundImage = 'url(../'+url+')';
-    ShadowOpacity(maxOpacity);
+    setTimeout(function() {
+        ShadowOpacity(maxOpacity, 0.3);
+    }, 300);
 }
 
 function CreateNewCard() {
     var song = songData[Math.floor(Math.random() * songData.length)];
 
     var div = document.createElement('div');
-    div.setAttribute('class', 'panel panel-'+song.name);
+    div.style.opacity = 0;
+
+    if(toggle == 0) {
+        toggle = 1;
+        div.setAttribute('class', 'panel panel-left');
+    }
+    else if(toggle == 1) {
+        toggle = 0;
+        div.setAttribute('class', 'panel panel-right');
+    }
+    console.log(toggle);
+
 
     var img = document.createElement('img');
     img.setAttribute('draggable', 'false');
@@ -171,11 +189,15 @@ function CreateNewCard() {
 
     div.appendChild(img);
     screen.appendChild(div);
+
+    setTimeout(function() {
+        div.style.opacity = 1;
+    }, 100)
 }
 
 function CreateEvents() {
     mc.on('press panstart panmove', function(e) {
-        ShadowOpacity(0);
+        ShadowOpacity(0, 0.1);
 
         // TODO: add smooth scale animation, problems with transition
         UpdateCardPos(currCard, e);
@@ -202,7 +224,7 @@ function CreateEvents() {
         }
         else {
             SnapBack(currCard);
-            ShadowOpacity(maxOpacity);
+            ShadowOpacity(maxOpacity, 0.3);
         }
     });
 }

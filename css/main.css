@@ -116,18 +116,20 @@ input[type="search"]::-webkit-search-results-decoration {
     transform: translate(-50%, -50%) perspective(1500px) scale(1) rotateY(0deg);
 }
 
-.panel:nth-child(3) {
+.panel-left {
     z-index: 10;
     left: 30%;
-    transform: translate(-50%, -50%) perspective(1500px) scale(0.8) rotateY(45deg);
-    /* transition: all 1s ease-in-out; */
+    transform: translate(-50%, -50%) perspective(1500px) scale(0.8) rotateY(25deg);
+    transition: all 0.3s ease-in-out;
+    filter: blur(4px);
 }
 
-.panel:nth-child(4) {
+.panel-right {
     z-index: 5;
     left: 70%;
-    transform: translate(-50%, -50%) perspective(1500px) scale(0.8) rotateY(-45deg);
-    /* transition: all 1s ease-in-out; */
+    transform: translate(-50%, -50%) perspective(1500px) scale(0.8) rotateY(-25deg);
+    transition: all 0.3s ease-in-out;
+    filter: blur(4px);
 }
 
 .panel > img {
@@ -151,7 +153,6 @@ input[type="search"]::-webkit-search-results-decoration {
     opacity: 0.6;
     background-image: url("../assets/images/test_cover2.jpg");
     z-index: 14;
-    transition: all 0.3s ease-in-out;
 
     border-radius: 25px;
     height: 80%;
