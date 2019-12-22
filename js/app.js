@@ -1,17 +1,17 @@
 // Fake Data
 var songData = [
     {
-        name: "song1",
+        name: 'song1',
         artist: 'artist1',
         imgUrl: 'assets/images/test_cover.jpg'
     },
     {
-        name: "song2",
+        name: 'song2',
         artist: 'artist2',
         imgUrl: 'assets/images/test_cover2.jpg'
     },
     {
-        name: "song3",
+        name: 'song3',
         artist: 'artist3',
         imgUrl: 'assets/images/test_cover3.jpg'
     }
@@ -19,12 +19,14 @@ var songData = [
 
 // Flags
 var pause = false,
-    mute = false;
+    mute = false,
+    tiltEnabled = false;
 
 var mc,
     screen,
     cardShadow,
     currCard,
+    currImg,
     currCardPos = {};
 
     var toggle = 0;
@@ -39,47 +41,45 @@ window.addEventListener('load', function(){
     Init();
 
     CreateEvents();
-
-    // // Tilt JS
-    // var img = document.querySelector("#img-curr");
-
-    // VanillaTilt.init(currCard, {
-    //     max: 1,
-    //     perspective: 100,
-    //     scale: 1,
-    //     speed: 1500,
-    //     reverse: true
-    // });
-
-    // // Parallax
-    // currCard.addEventListener("tiltChange", function(e) {
-    //     var mult = 5; 
-
-    //     var pos = {
-    //         top: 50 + (e.detail.tiltY * mult),
-    //         left: 50 - (e.detail.tiltX * mult)
-    //     }
-
-    //     img.style.top = (pos.top + "%");
-    //     img.style.left = (pos.left + "%");
-    //     img.style.transition = "none";
-    // });
-
-    // // Reset image position
-    // currCard.addEventListener("mouseleave", function(e) {
-    //     img.style.top = "50%";
-    //     img.style.left = "50%";
-    //     img.style.transition = "all 0.3s";
-    // });
 });
 
 function Init() {
     screen = document.getElementById('panels-container');
     cardShadow = document.getElementById('panel-shadow');
     currCard = document.getElementById('panel-curr');
+    currImg = currCard.getElementsByTagName('img')[0];
     mc = new Hammer.Manager(currCard);
+
     mc.add(new Hammer.Pan());
     mc.add(new Hammer.Press());
+
+    EnableTilt();
+}
+
+function EnableTilt() {
+    if(tiltEnabled) return;
+
+    VanillaTilt.init(currCard, {
+        max: 1,
+        perspective: 100,
+        scale: 1,
+        speed: 1500,
+        reverse: true,
+        // gyroscope: true,
+        // gyroscopeMinAngleX: -10,
+        // gyroscopeMaxAngleX: 10,
+        // gyroscopeMinAngleY: -10,
+        // gyroscopeMaxAngleY: 10,
+    });
+
+    tiltEnabled = !tiltEnabled;
+}
+
+function DisableTilt() {
+    if(!tiltEnabled) return;
+
+    currCard.vanillaTilt.destroy();
+    tiltEnabled = !tiltEnabled;
 }
 
 function UpdateCurrCard() {
@@ -126,6 +126,8 @@ function SnapBack(el) {
     el.style.left = '50%';
     el.style.transform = 'translate(-50%, -50%)';
     el.style.transition = 'all 0.3s ease-in-out';
+
+    setTimeout(EnableTilt, 300);
 }
 
 function SnapRight(el) {
@@ -179,8 +181,6 @@ function CreateNewCard() {
         toggle = 0;
         div.setAttribute('class', 'panel panel-right');
     }
-    console.log(toggle);
-
 
     var img = document.createElement('img');
     img.setAttribute('draggable', 'false');
@@ -201,6 +201,7 @@ function CreateEvents() {
 
         // TODO: add smooth scale animation, problems with transition
         UpdateCardPos(currCard, e);
+        DisableTilt();
     });
 
     mc.on('pressup panend', function(e) {
@@ -210,9 +211,12 @@ function CreateEvents() {
         // Do we take action or snap back
         if(dist >= bp) {
             SnapAnimation(currCard, e, function() {
+                currCard.removeEventListener('tiltChange', function(){});
+                currCard.removeEventListener('mouseleave', function(){});
                 DestroyCurrCard();
                 SetUpNextCard();
                 CreateNewCard();
+                EnableTilt();
             });
 
             if(dir > 0) { // Right
@@ -226,5 +230,30 @@ function CreateEvents() {
             SnapBack(currCard);
             ShadowOpacity(maxOpacity, 0.3);
         }
+    });
+
+    // Parallax
+    currCard.addEventListener('tiltChange', function(e) {
+        var mult = 5; 
+
+        var pos = {
+            top: 50 + (e.detail.tiltY * mult),
+            left: 50 - (e.detail.tiltX * mult)
+        }
+
+        currImg.style.top = (pos.top + '%');
+        currImg.style.left = (pos.left + '%');
+        currImg.style.transition = 'none';
+
+        // Has small delay, syncs when image is still
+        cardShadow.style.transform = currCard.style.transform;
+    });
+
+    // Reset image position
+    currCard.addEventListener('mouseleave', function(e) {
+        currImg.style.top = '50%';
+        currImg.style.left = '50%';
+        currImg.style.transition = 'all 0.3s';
+        cardShadow.style.transform = 'translate(-50%, -50%)';
     });
 }
