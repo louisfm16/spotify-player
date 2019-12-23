@@ -115,22 +115,35 @@ input[type="search"]::-webkit-search-results-decoration {
     z-index: 5;
     cursor: pointer;
     transform: translate(-50%, -50%) perspective(1500px) scale(1) rotateY(0deg);
+
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1500;
+    -webkit-transform: translate(-50%, -50%) perspective(1500px) scale(1) rotateY(0deg);
+    -webkit-transform: translate3d(-50%, -50%, 0) perspective(1500px) scale(1) rotateY(0deg);
+    backface-visibility: hidden;
+    perspective: 1500;
 }
 
 .panel-left {
     z-index: 10;
     left: 30%;
-    transform: translate(-50%, -50%) perspective(1500px) scale(0.8) rotateY(25deg);
+    transform: translate(-50%, -50%) perspective(1500px) scale(0.7) rotateY(25deg);
+    -webkit-transform: translate(-50%, -50%) perspective(1500px) scale(0.7) rotateY(25deg);
+    -webkit-transform: translate3d(-50%, -50%, 0) perspective(1500px) scale(0.7) rotateY(25deg);
     transition: all 0.3s ease-in-out;
-    /* filter: blur(4px); */
+    filter: blur(5px);
+    overflow: hidden;
 }
 
 .panel-right {
     z-index: 5;
     left: 70%;
-    transform: translate(-50%, -50%) perspective(1500px) scale(0.8) rotateY(-25deg);
+    transform: translate(-50%, -50%) perspective(1500px) scale(0.7) rotateY(-25deg);
+    -webkit-transform: translate(-50%, -50%) perspective(1500px) scale(0.7) rotateY(-25deg);
+    -webkit-transform: translate3d(-50%, -50%, 0) perspective(1500px) scale(0.7) rotateY(-25deg);
     transition: all 0.3s ease-in-out;
-    /* filter: blur(4px); */
+    filter: blur(5px);
+    overflow: hidden;
 }
 
 .panel > img {
@@ -138,7 +151,7 @@ input[type="search"]::-webkit-search-results-decoration {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 110%;
+    height: 102%;
     outline: none;
     user-drag: none; 
     user-select: none;
@@ -148,9 +161,37 @@ input[type="search"]::-webkit-search-results-decoration {
     -ms-user-select: none;
 }
 
+.panel > .panel_details {
+    position: absolute;
+    bottom: 5%;
+    width: 100%;
+    color: #fff;
+    font-size: 42px;
+    font-family: sans-serif;
+    padding: 0 40px;
+
+    perspective: 400;
+    transform: translateZ(20px);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#panel_details-title {
+    text-shadow: -1px -1px 3px #000;
+    font-size: 44px;
+    font-weight: 700;
+}
+
+#panel_details-artist {
+    text-shadow: -1px -1px 3px #000;
+    font-size: 40px;
+    font-weight: 100;
+    color: #b3b3b3;
+}
+
 #panel-shadow {
     content: "";
-    display: block;
+    display: none;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -177,15 +218,15 @@ input[type="search"]::-webkit-search-results-decoration {
     -ms-user-select: none;
 }
 
-.panel_details {
-    display: none;
-}
-
 #panel-curr {
     overflow: hidden;
     /* height: 80%;
     width: 30vh; */
     z-index: 15;
+}
+
+#panel-curr > .panel_details {
+    opacity: 1;
 }
 
 /* * Details & Controls Container */

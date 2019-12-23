@@ -1,26 +1,55 @@
 // Fake Data
 var songData = [
     {
-        name: 'song1',
-        artist: 'artist1',
+        name: 'ATM',
+        artist: 'J. Cole',
         imgUrl: 'assets/images/test_cover.jpg'
     },
     {
-        name: 'song2',
-        artist: 'artist2',
+        name: 'Sometimes...',
+        artist: 'Tyler, The Creator',
         imgUrl: 'assets/images/test_cover2.jpg'
     },
     {
-        name: 'song3',
-        artist: 'artist3',
+        name: 'South Side of the Sky',
+        artist: 'Yes',
         imgUrl: 'assets/images/test_cover3.jpg'
+    },
+    {
+        name: 'Somewhere In Between',
+        artist: 'Token',
+        imgUrl: 'assets/images/test_cover4.jpg'
+    },
+    {
+        name: 'Get In My Car',
+        artist: '50 Cent',
+        imgUrl: 'assets/images/test_cover5.jpg'
+    },
+    {
+        name: 'I Don\'t Die',
+        artist: 'Joyner Lucas',
+        imgUrl: 'assets/images/test_cover6.jpg'
+    },
+    {
+        name: 'Strange Music Box',
+        artist: 'Tech N9ne',
+        imgUrl: 'assets/images/test_cover7.jpg'
+    },
+    {
+        name: 'Blockbuster Night, Pt. 1',
+        artist: 'Run The Jewels',
+        imgUrl: 'assets/images/test_cover8.jpg'
+    },
+    {
+        name: 'Man Of The Year',
+        artist: 'ScHoolboy Q',
+        imgUrl: 'assets/images/test_cover9.jpg'
     }
 ];
 
 // Flags
 var pause = false,
-    mute = false,
-    tiltEnabled = false;
+    mute = false;
 
 var mc,
     screen,
@@ -45,6 +74,7 @@ window.addEventListener('load', function(){
 
 function Init() {
     screen = document.getElementById('panels-container');
+    currCard = document.getElementById('panel-curr');
     cardShadow = document.getElementById('panel-shadow');
     currCard = document.getElementById('panel-curr');
     currImg = currCard.getElementsByTagName('img')[0];
@@ -53,33 +83,9 @@ function Init() {
     mc.add(new Hammer.Pan());
     mc.add(new Hammer.Press());
 
-    EnableTilt();
-}
-
-function EnableTilt() {
-    if(tiltEnabled) return;
-
-    VanillaTilt.init(currCard, {
-        max: 1,
-        perspective: 100,
-        scale: 1,
-        speed: 1500,
-        reverse: true,
-        // gyroscope: true,
-        // gyroscopeMinAngleX: -10,
-        // gyroscopeMaxAngleX: 10,
-        // gyroscopeMinAngleY: -10,
-        // gyroscopeMaxAngleY: 10,
-    });
-
-    tiltEnabled = !tiltEnabled;
-}
-
-function DisableTilt() {
-    if(!tiltEnabled) return;
-
-    currCard.vanillaTilt.destroy();
-    tiltEnabled = !tiltEnabled;
+    SetUpFirstCard();
+    CreateNewCard();
+    CreateNewCard();
 }
 
 function UpdateCurrCard() {
@@ -126,8 +132,6 @@ function SnapBack(el) {
     el.style.left = '50%';
     el.style.transform = 'translate(-50%, -50%)';
     el.style.transition = 'all 0.3s ease-in-out';
-
-    setTimeout(EnableTilt, 300);
 }
 
 function SnapRight(el) {
@@ -144,6 +148,30 @@ function DestroyCurrCard() {
 
     mc.destroy();
     currCard.remove();
+}
+
+function SetUpFirstCard() {
+    var song = songData[Math.floor(Math.random() * songData.length)];
+
+    var img = currCard.getElementsByTagName('img')[0];
+    img.setAttribute('draggable', 'false');
+    img.setAttribute('src', song.imgUrl);
+    img.setAttribute('alt', song.name);
+    
+    var url = img.getAttribute('src');
+    cardShadow.style.backgroundImage = 'url(../'+url+')';
+
+    // Track Details
+    var title = document.getElementById('panel_details-title');
+    var artist = document.getElementById('panel_details-artist');
+
+    // details.style.opacity = 0;
+    title.innerHTML = song.name;
+    artist.innerHTML = song.artist;
+
+    setTimeout(function() {
+        ShadowOpacity(maxOpacity, 0.3);
+    }, 300);
 }
 
 function SetUpNextCard() {
@@ -170,28 +198,47 @@ function SetUpNextCard() {
 function CreateNewCard() {
     var song = songData[Math.floor(Math.random() * songData.length)];
 
-    var div = document.createElement('div');
-    div.style.opacity = 0;
+    // Panel/Card
+    var panel = document.createElement('div');
+    panel.style.opacity = 0;
 
     if(toggle == 0) {
         toggle = 1;
-        div.setAttribute('class', 'panel panel-left');
+        panel.setAttribute('class', 'panel panel-left');
     }
     else if(toggle == 1) {
         toggle = 0;
-        div.setAttribute('class', 'panel panel-right');
+        panel.setAttribute('class', 'panel panel-right');
     }
 
+    // Album image
     var img = document.createElement('img');
     img.setAttribute('draggable', 'false');
     img.setAttribute('src', song.imgUrl);
-    img.setAttribute('alt', 'An image is here');
+    img.setAttribute('alt', song.name);
 
-    div.appendChild(img);
-    screen.appendChild(div);
+    // Track Details
+    var details = document.createElement('div');
+    var title = document.createElement('div');
+    var artist = document.createElement('div');
+
+    details.setAttribute('class', 'panel_details');
+    title.setAttribute('id', 'panel_details-title');
+    artist.setAttribute('id', 'panel_details-artist');
+
+    // details.style.opacity = 0;
+    title.innerHTML = song.name;
+    artist.innerHTML = song.artist;
+
+    details.appendChild(title);
+    details.appendChild(artist);
+
+    panel.appendChild(img);
+    panel.appendChild(details);
+    screen.appendChild(panel);
 
     setTimeout(function() {
-        div.style.opacity = 1;
+        panel.style.opacity = 1;
     }, 100)
 }
 
@@ -201,7 +248,6 @@ function CreateEvents() {
 
         // TODO: add smooth scale animation, problems with transition
         UpdateCardPos(currCard, e);
-        DisableTilt();
     });
 
     mc.on('pressup panend', function(e) {
@@ -211,12 +257,9 @@ function CreateEvents() {
         // Do we take action or snap back
         if(dist >= bp) {
             SnapAnimation(currCard, e, function() {
-                currCard.removeEventListener('tiltChange', function(){});
-                currCard.removeEventListener('mouseleave', function(){});
                 DestroyCurrCard();
                 SetUpNextCard();
                 CreateNewCard();
-                EnableTilt();
             });
 
             if(dir > 0) { // Right
@@ -231,29 +274,31 @@ function CreateEvents() {
             ShadowOpacity(maxOpacity, 0.3);
         }
     });
-
-    // Parallax
-    currCard.addEventListener('tiltChange', function(e) {
-        var mult = 5; 
-
-        var pos = {
-            top: 50 + (e.detail.tiltY * mult),
-            left: 50 - (e.detail.tiltX * mult)
-        }
-
-        currImg.style.top = (pos.top + '%');
-        currImg.style.left = (pos.left + '%');
-        currImg.style.transition = 'none';
-
-        // Has small delay, syncs when image is still
-        cardShadow.style.transform = currCard.style.transform;
-    });
-
-    // Reset image position
-    currCard.addEventListener('mouseleave', function(e) {
-        currImg.style.top = '50%';
-        currImg.style.left = '50%';
-        currImg.style.transition = 'all 0.3s';
-        cardShadow.style.transform = 'translate(-50%, -50%)';
-    });
 }
+
+
+
+// // Parallax
+// currCard.addEventListener('tiltChange', function(e) {
+//     var mult = 5; 
+
+//     var pos = {
+//         top: 50 + (e.detail.tiltY * mult),
+//         left: 50 - (e.detail.tiltX * mult)
+//     }
+
+//     currImg.style.top = (pos.top + '%');
+//     currImg.style.left = (pos.left + '%');
+//     currImg.style.transition = 'none';
+
+//     // Has small delay, syncs when image is still
+//     cardShadow.style.transform = currCard.style.transform;
+// });
+
+// // Reset image position
+// currCard.addEventListener('mouseleave', function(e) {
+//     currImg.style.top = '50%';
+//     currImg.style.left = '50%';
+//     currImg.style.transition = 'all 0.3s';
+//     cardShadow.style.transform = 'translate(-50%, -50%)';
+// });
