@@ -53,6 +53,8 @@ var pause = false,
 
 var mc,
     screen,
+    btnCancel,
+    btnAdd,
     cardShadow,
     currCard,
     currImg,
@@ -74,6 +76,8 @@ window.addEventListener('load', function(){
 
 function Init() {
     screen = document.getElementById('panels-container');
+    btnCancel = document.getElementById('controls-cancel');
+    btnAdd = document.getElementById('controls-add');
     currCard = document.getElementById('panel-curr');
     cardShadow = document.getElementById('panel-shadow');
     currCard = document.getElementById('panel-curr');
@@ -86,9 +90,33 @@ function Init() {
     SetUpFirstCard();
     CreateNewCard();
     CreateNewCard();
+
+    btnCancel.addEventListener('click', function() {
+        currCardPos = {
+            x: -1000,
+            y: -1 * (currCard.offsetHeight / 2)
+        }
+
+        ShadowOpacity(0, 0.1);
+        SnapLeft(currCard, {angle: 0, deltaX: -500, deltaY: 0});
+    });
+
+    btnAdd.addEventListener('click', function() {
+        currCardPos = {
+            x: 500,
+            y: -1 * (currCard.offsetHeight / 2)
+        }
+
+        ShadowOpacity(0, 0.1);
+        SnapRight(currCard, {angle: 0, deltaX: 500, deltaY: 0});
+    });
 }
 
 function UpdateCurrCard() {
+
+}
+
+function AddToPlaylist(playlistName) {
 
 }
 
@@ -134,12 +162,30 @@ function SnapBack(el) {
     el.style.transition = 'all 0.3s ease-in-out';
 }
 
-function SnapRight(el) {
+function SnapRight(el, e) {
+    AddToPlaylist('Tinder-fy Playlist');
 
+    SnapAnimation(el, e, function() {
+        DestroyCurrCard();
+        SetUpNextCard();
+        CreateNewCard();
+    });
 }
 
-function SnapLeft(el) {
+function SnapLeft(el, e) {
+    SnapAnimation(el, e, function() {
+        DestroyCurrCard();
+        SetUpNextCard();
+        CreateNewCard();
+    })
+}
 
+function Like() {
+    
+}
+
+function UnLike() {
+    
 }
 
 function DestroyCurrCard() {
@@ -217,6 +263,11 @@ function CreateNewCard() {
     img.setAttribute('src', song.imgUrl);
     img.setAttribute('alt', song.name);
 
+    // The heart icon/button
+    var heart = document.createElement('span');
+    heart.setAttribute('id', 'heart');
+    heart.setAttribute('class', 'icon-heart-empty');
+
     // Track Details
     var details = document.createElement('div');
     var title = document.createElement('div');
@@ -234,6 +285,7 @@ function CreateNewCard() {
     details.appendChild(artist);
 
     panel.appendChild(img);
+    panel.appendChild(heart);
     panel.appendChild(details);
     screen.appendChild(panel);
 
@@ -256,17 +308,17 @@ function CreateEvents() {
 
         // Do we take action or snap back
         if(dist >= bp) {
-            SnapAnimation(currCard, e, function() {
-                DestroyCurrCard();
-                SetUpNextCard();
-                CreateNewCard();
-            });
+            // SnapAnimation(currCard, e, function() {
+            //     DestroyCurrCard();
+            //     SetUpNextCard();
+            //     CreateNewCard();
+            // });
 
             if(dir > 0) { // Right
-                SnapRight(currCard);
+                SnapRight(currCard, e);
             }
             else if(dir < 0) { // Left
-                SnapLeft(currCard);
+                SnapLeft(currCard, e);
             }
         }
         else {
