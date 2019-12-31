@@ -1,4 +1,28 @@
-// Fake Data
+//                       .-._                                                   _,-,
+//                       `._`-._                                           _,-'_,'
+//                          `._ `-._                                   _,-' _,'
+//                             `._  `-._        __.-----.__        _,-'  _,'
+//                                `._   `#==="""           """===#'   _,'
+//                                   `._/)  ._               _.  (\_,'
+//                                    )*'     **.__     __.**     '*( 
+//                                    #  .==..__  ""   ""  __..==,  # 
+//                                    #   `"._(_).       .(_)_."'   #
+//  __| |____________________________________________________________________________________________| |__
+// (__   ____________________________________________________________________________________________   __)
+//    | |                                                                                            | |
+//    | |  ██╗      ██████╗ ██╗   ██╗██╗███████╗    ███╗   ███╗███████╗██████╗ ██╗███╗   ██╗ █████╗  | |
+//    | |  ██║     ██╔═══██╗██║   ██║██║██╔════╝    ████╗ ████║██╔════╝██╔══██╗██║████╗  ██║██╔══██╗ | |
+//    | |  ██║     ██║   ██║██║   ██║██║███████╗    ██╔████╔██║█████╗  ██║  ██║██║██╔██╗ ██║███████║ | |
+//    | |  ██║     ██║   ██║██║   ██║██║╚════██║    ██║╚██╔╝██║██╔══╝  ██║  ██║██║██║╚██╗██║██╔══██║ | |
+//    | |  ███████╗╚██████╔╝╚██████╔╝██║███████║    ██║ ╚═╝ ██║███████╗██████╔╝██║██║ ╚████║██║  ██║ | |
+//    | |  ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚══════╝    ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ | |
+//  __| |____________________________________________________________________________________________| |__
+// (__   ____________________________________________________________________________________________   __)
+//    | |                                                                                            | |
+
+
+// Begin Variables
+// Fake Song Data
 var songData = [
     {
         name: 'ATM',
@@ -49,7 +73,9 @@ var songData = [
 
 // Flags
 var pause = false,
-    mute = false;
+    mute = false,
+    togglePanel = false;
+
 
 var mc,
     screen,
@@ -60,14 +86,17 @@ var mc,
     currImg,
     currCardPos = {};
 
-    var toggle = 0;
-
 const bp = 300,
     angleBp = 10,
     maxOpacity = 0.6,
     lAngleBp = 180 - angleBp,
     rAngleBp = angleBp;
 
+// End Variables
+
+
+
+// Begin Init Functions
 window.addEventListener('load', function(){
     Init();
 
@@ -75,23 +104,27 @@ window.addEventListener('load', function(){
 });
 
 function Init() {
+    // Assign all instantiated variables
     screen = document.getElementById('panels-container');
     btnCancel = document.getElementById('controls-cancel');
     btnAdd = document.getElementById('controls-add');
     currCard = document.getElementById('panel-curr');
     cardShadow = document.getElementById('panel-shadow');
-    currCard = document.getElementById('panel-curr');
     currImg = currCard.getElementsByTagName('img')[0];
     mc = new Hammer.Manager(currCard);
 
+    // Add recognizers to Hammer manager
     mc.add(new Hammer.Pan());
     mc.add(new Hammer.Press());
 
+    // Set up first set of 3 cards
     SetUpFirstCard();
     CreateNewCard();
     CreateNewCard();
 
+    // Consistent event listeners for add & cancel buttons
     btnCancel.addEventListener('click', function() {
+        // currCardPos is undefined at its default state, this makes sure it snaps left
         currCardPos = {
             x: -1000,
             y: -1 * (currCard.offsetHeight / 2)
@@ -102,6 +135,7 @@ function Init() {
     });
 
     btnAdd.addEventListener('click', function() {
+        // currCardPos is undefined at its default state, this makes sure it snaps right
         currCardPos = {
             x: 500,
             y: -1 * (currCard.offsetHeight / 2)
@@ -112,90 +146,13 @@ function Init() {
     });
 }
 
-function UpdateCurrCard() {
+// End Init Functions
 
-}
 
-function AddToPlaylist(playlistName) {
 
-}
+// Begin Card/Panel Actions
 
-function UpdateCardPos(el, e) {
-    currCardPos = {
-        x: (e.deltaX - (el.offsetWidth / 2)),
-        y: (e.deltaY - (el.offsetHeight / 2))
-    }
-
-    el.style.transform = `translate(${currCardPos.x}px, ${currCardPos.y}px) scale(1.1)`;
-    el.style.transition = 'none';
-}
-
-function ShadowOpacity(val, sec) {
-    cardShadow.style.opacity = val;
-    cardShadow.style.transition = 'all '+ sec +'s ease-in';
-}
-
-// Actions
-function SnapAnimation(el, e, callback) {
-    var angle = Math.abs(e.angle);
-    var newPos = {
-        x: ((screen.offsetWidth / 2) * Math.sign(e.deltaX) + currCardPos.x),
-        y: ((screen.offsetHeight / 2) * Math.sign(e.deltaY) + currCardPos.y)
-    };
-
-    // Check to see if we have to animate diagonally
-    if(angle >= (lAngleBp) || angle <= rAngleBp) {
-        newPos.y = currCardPos.y;
-    }
-
-    el.style.transform = `translate(${newPos.x}px, ${newPos.y}px)`;
-    el.style.transition = 'all 0.2s ease-in-out';
-
-    setTimeout(callback, 300);
-}
-
-function SnapBack(el) {
-    // Original absolute center position
-    el.style.top = '50%';
-    el.style.left = '50%';
-    el.style.transform = 'translate(-50%, -50%)';
-    el.style.transition = 'all 0.3s ease-in-out';
-}
-
-function SnapRight(el, e) {
-    AddToPlaylist('Tinder-fy Playlist');
-
-    SnapAnimation(el, e, function() {
-        DestroyCurrCard();
-        SetUpNextCard();
-        CreateNewCard();
-    });
-}
-
-function SnapLeft(el, e) {
-    SnapAnimation(el, e, function() {
-        DestroyCurrCard();
-        SetUpNextCard();
-        CreateNewCard();
-    })
-}
-
-function Like() {
-    
-}
-
-function UnLike() {
-    
-}
-
-function DestroyCurrCard() {
-    mc.off('press panstart panmove');
-    mc.off('pressup panend');
-
-    mc.destroy();
-    currCard.remove();
-}
-
+// Add the correct attributes, elements, etc. to the current card
 function SetUpFirstCard() {
     var song = songData[Math.floor(Math.random() * songData.length)];
 
@@ -211,15 +168,11 @@ function SetUpFirstCard() {
     var title = document.getElementById('panel_details-title');
     var artist = document.getElementById('panel_details-artist');
 
-    // details.style.opacity = 0;
     title.innerHTML = song.name;
     artist.innerHTML = song.artist;
-
-    setTimeout(function() {
-        ShadowOpacity(maxOpacity, 0.3);
-    }, 300);
 }
 
+// Setup the next card in line to be the currCard
 function SetUpNextCard() {
     screen.getElementsByTagName('div')[0].setAttribute('id', 'panel-curr');
 
@@ -236,11 +189,13 @@ function SetUpNextCard() {
 
     var url = currCard.getElementsByTagName('img')[0].getAttribute('src');
     cardShadow.style.backgroundImage = 'url(../'+url+')';
+
     setTimeout(function() {
         ShadowOpacity(maxOpacity, 0.3);
     }, 300);
 }
 
+// Create a new card to replace the oldest one
 function CreateNewCard() {
     var song = songData[Math.floor(Math.random() * songData.length)];
 
@@ -248,14 +203,14 @@ function CreateNewCard() {
     var panel = document.createElement('div');
     panel.style.opacity = 0;
 
-    if(toggle == 0) {
-        toggle = 1;
+    if(togglePanel) {
         panel.setAttribute('class', 'panel panel-left');
     }
-    else if(toggle == 1) {
-        toggle = 0;
+    else if(!togglePanel) {
         panel.setAttribute('class', 'panel panel-right');
     }
+
+    togglePanel = !togglePanel;
 
     // Album image
     var img = document.createElement('img');
@@ -277,7 +232,6 @@ function CreateNewCard() {
     title.setAttribute('id', 'panel_details-title');
     artist.setAttribute('id', 'panel_details-artist');
 
-    // details.style.opacity = 0;
     title.innerHTML = song.name;
     artist.innerHTML = song.artist;
 
@@ -287,13 +241,34 @@ function CreateNewCard() {
     panel.appendChild(img);
     panel.appendChild(heart);
     panel.appendChild(details);
+
     screen.appendChild(panel);
 
+    // Show the newly created card/panel
     setTimeout(function() {
         panel.style.opacity = 1;
-    }, 100)
+    }, 100);
 }
 
+// Called when the card is snapped to the right/add event
+function SnapRight(el, e) {
+    SnapAnimation(el, e, function() {
+        DestroyCurrCard();
+        SetUpNextCard();
+        CreateNewCard();
+    });
+}
+
+// Called when the card is snapped to the left/cancel event
+function SnapLeft(el, e) {
+    SnapAnimation(el, e, function() {
+        DestroyCurrCard();
+        SetUpNextCard();
+        CreateNewCard();
+    })
+}
+
+// Called when setting up new currCard
 function CreateEvents() {
     mc.on('press panstart panmove', function(e) {
         ShadowOpacity(0, 0.1);
@@ -308,16 +283,10 @@ function CreateEvents() {
 
         // Do we take action or snap back
         if(dist >= bp) {
-            // SnapAnimation(currCard, e, function() {
-            //     DestroyCurrCard();
-            //     SetUpNextCard();
-            //     CreateNewCard();
-            // });
-
-            if(dir > 0) { // Right
+            if(dir > 0) {
                 SnapRight(currCard, e);
             }
-            else if(dir < 0) { // Left
+            else if(dir < 0) {
                 SnapLeft(currCard, e);
             }
         }
@@ -327,6 +296,74 @@ function CreateEvents() {
         }
     });
 }
+
+// Dictates the cards position while dragging/holding with mouse or finger
+function UpdateCardPos(el, e) {
+    currCardPos = {
+        x: (e.deltaX - (el.offsetWidth / 2)),
+        y: (e.deltaY - (el.offsetHeight / 2))
+    }
+
+    el.style.transform = `translate(${currCardPos.x}px, ${currCardPos.y}px) scale(1.1)`;
+    el.style.transition = 'none';
+}
+
+// Gets rid of the current cards elements and event listeners
+function DestroyCurrCard() {
+    mc.off('press panstart panmove');
+    mc.off('pressup panend');
+
+    mc.destroy();
+    currCard.remove();
+}
+
+// End Card/Panel Actions
+
+
+
+// Begin Animations
+
+// Snapping Animation based on direction and angle
+function SnapAnimation(el, e, callback) {
+    var angle = Math.abs(e.angle);
+    var newPos = {
+        x: ((screen.offsetWidth / 2) * Math.sign(e.deltaX) + currCardPos.x),
+        y: ((screen.offsetHeight / 2) * Math.sign(e.deltaY) + currCardPos.y)
+    };
+
+    // Check to see if we have to animate diagonally
+    if(angle >= (lAngleBp) || angle <= rAngleBp) {
+        newPos.y = currCardPos.y;
+    }
+
+    el.style.transform = `translate(${newPos.x}px, ${newPos.y}px)`;
+    el.style.transition = 'all 0.2s ease-in-out';
+
+    setTimeout(callback, 300);
+}
+
+// Animation: snaps the card back to the center of the screen if the threshold is not reached
+function SnapBack(el) {
+    // Original absolute center position
+    el.style.top = '50%';
+    el.style.left = '50%';
+    el.style.transform = 'translate(-50%, -50%)';
+    el.style.transition = 'all 0.3s ease-in-out';
+}
+
+// End Animations
+
+
+
+// Begin Utility Functions
+
+// Sets the Opacity of the currCards shadow
+function ShadowOpacity(val, sec) {
+    cardShadow.style.opacity = val;
+    cardShadow.style.transition = 'all '+ sec +'s ease-in';
+}
+
+// End Utility Functions
 
 
 

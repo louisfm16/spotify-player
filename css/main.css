@@ -244,7 +244,6 @@ input[type="search"]::-webkit-search-results-decoration {
     background-size: cover;
     filter: blur(20px);
     opacity: 0.6;
-    background-image: url("../assets/images/test_cover2.jpg");
     z-index: 14;
 
     border-radius: 25px;
