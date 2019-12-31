@@ -72,19 +72,22 @@ var songData = [
 ];
 
 // Flags
-var pause = false,
-    mute = false,
-    togglePanel = false;
-
+var songPlaying = true,
+    togglePanel = false,
+    songLiked = false;
 
 var mc,
     screen,
     btnCancel,
+    btnPause,
     btnAdd,
+    slider,
+    heart,
     cardShadow,
     currCard,
     currImg,
-    currCardPos = {};
+    currCardPos = {},
+    currSongPerc = 0;
 
 const bp = 300,
     angleBp = 10,
@@ -107,7 +110,9 @@ function Init() {
     // Assign all instantiated variables
     screen = document.getElementById('panels-container');
     btnCancel = document.getElementById('controls-cancel');
+    btnPause = document.getElementById('controls-pause');
     btnAdd = document.getElementById('controls-add');
+    slider = document.getElementById('slide-percent');
     currCard = document.getElementById('panel-curr');
     cardShadow = document.getElementById('panel-shadow');
     currImg = currCard.getElementsByTagName('img')[0];
@@ -132,6 +137,10 @@ function Init() {
 
         ShadowOpacity(0, 0.1);
         SnapLeft(currCard, {angle: 0, deltaX: -500, deltaY: 0});
+    });
+
+    btnPause.addEventListener('click', function() {
+        TogglePause();
     });
 
     btnAdd.addEventListener('click', function() {
@@ -160,9 +169,12 @@ function SetUpFirstCard() {
     img.setAttribute('draggable', 'false');
     img.setAttribute('src', song.imgUrl);
     img.setAttribute('alt', song.name);
-    
+
     var url = img.getAttribute('src');
     cardShadow.style.backgroundImage = 'url(../'+url+')';
+
+    heart = currCard.getElementsByTagName('span')[0];
+    heart.setAttribute('id', 'heart');
 
     // Track Details
     var title = document.getElementById('panel_details-title');
@@ -180,6 +192,9 @@ function SetUpNextCard() {
     currCard.setAttribute('class', 'panel');
     currCard.style.transition = 'all 0.3s ease-in-out';
     currCardPos = {};
+
+    heart = currCard.getElementsByTagName('span')[0];
+    heart.setAttribute('id', 'heart');
 
     mc = new Hammer.Manager(currCard);
     mc.add(new Hammer.Pan());
@@ -219,9 +234,8 @@ function CreateNewCard() {
     img.setAttribute('alt', song.name);
 
     // The heart icon/button
-    var heart = document.createElement('span');
-    heart.setAttribute('id', 'heart');
-    heart.setAttribute('class', 'icon-heart-empty');
+    var heartIcon = document.createElement('span');
+    heartIcon.setAttribute('class', 'icon-heart-empty');
 
     // Track Details
     var details = document.createElement('div');
@@ -239,7 +253,7 @@ function CreateNewCard() {
     details.appendChild(artist);
 
     panel.appendChild(img);
-    panel.appendChild(heart);
+    panel.appendChild(heartIcon);
     panel.appendChild(details);
 
     screen.appendChild(panel);
@@ -295,6 +309,10 @@ function CreateEvents() {
             ShadowOpacity(maxOpacity, 0.3);
         }
     });
+
+    heart.addEventListener("click", function() {
+        ToggleLiked();
+    });
 }
 
 // Dictates the cards position while dragging/holding with mouse or finger
@@ -315,6 +333,18 @@ function DestroyCurrCard() {
 
     mc.destroy();
     currCard.remove();
+
+    ResetSongVars();
+    SliderPercentage(0);
+}
+
+function ResetSongVars() {
+    currSongPerc = 0;
+    songLiked = false;
+
+    if(!songPlaying) {
+        TogglePause();
+    }
 }
 
 // End Card/Panel Actions
@@ -361,6 +391,43 @@ function SnapBack(el) {
 function ShadowOpacity(val, sec) {
     cardShadow.style.opacity = val;
     cardShadow.style.transition = 'all '+ sec +'s ease-in';
+}
+
+function SliderPercentage(percent) {
+    if(percent > 100) {
+        percent = 100;
+    } 
+    else if(percent < 0) {
+        percent = 0;
+    }
+
+    slider.style.width = percent + "%";
+}
+
+function ToggleLiked() {
+    if(!songLiked) {
+        heart.classList.remove("icon-heart-empty");
+        heart.classList.add("icon-heart");
+    } 
+    else if(songLiked) {
+        heart.classList.remove("icon-heart");
+        heart.classList.add("icon-heart-empty");
+    }
+
+    songLiked = !songLiked;
+}
+
+function TogglePause() {
+    if(songPlaying) {
+        btnPause.classList.remove("controls_actions-pause");
+        btnPause.classList.add("controls_actions-play");
+    } 
+    else if(!songPlaying) {
+        btnPause.classList.remove("controls_actions-play");
+        btnPause.classList.add("controls_actions-pause");
+    }
+
+    songPlaying = !songPlaying;
 }
 
 // End Utility Functions
