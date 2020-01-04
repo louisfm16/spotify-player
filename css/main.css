@@ -18,6 +18,7 @@
 }
 
 html, body {
+    position: relative;
     height: 100vh;
     width: 100vw;
     max-height: 100vh;
@@ -53,7 +54,6 @@ html, body {
     left: 50%;
     transform: translate(-50%, -50%);
     height: 70%;
-    /* border: 1px solid red; */
     overflow: hidden;
 }
 
@@ -292,6 +292,7 @@ html, body {
 
 /* * Details & Controls Container */
 .controls {
+    position: relative;
     height: 8%;
     padding: 0 30%;
     background-color: #212121;
@@ -301,7 +302,6 @@ html, body {
 .controls_actions {
     position: relative;
     height: 70%;
-    /* clear: both; */
 }
 
 .icon {
